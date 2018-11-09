@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CScribblenewDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_PEN_THICKLINE, &CScribblenewDoc::OnUpdatePenThickline)
 	ON_UPDATE_COMMAND_UI(ID_PEN_CLEARALL, &CScribblenewDoc::OnUpdatePenClearall)
 	ON_COMMAND(ID_PEN_WIDTHS, &CScribblenewDoc::OnPenWidths)
+	ON_COMMAND(ID_PEN_Color, &CScribblenewDoc::OnPenColor)
 END_MESSAGE_MAP()
 
 
@@ -195,9 +196,11 @@ IMPLEMENT_SERIAL(CStroke, CObject, 2)
 	// This empty constructor should be used by serialization only
 }
 
-CStroke::CStroke(UINT nPenWidth)
+CStroke::CStroke(UINT nPenWidth, COLORREF PenColor)
 {
 	m_nPenWidth = nPenWidth;
+	m_PenColor =  PenColor; 
+
 	m_rectBounding.SetRectEmpty();
 }
 
@@ -207,6 +210,8 @@ void CStroke::Serialize(CArchive& ar)
 	{
 		ar << m_rectBounding;
 		ar << (WORD)m_nPenWidth;  //save
+		ar << (DWORD)m_PenColor;
+
 		m_pointArray.Serialize(ar);
 	}
 	else
@@ -215,6 +220,11 @@ void CStroke::Serialize(CArchive& ar)
 		WORD w;
 		ar >> w;
 		m_nPenWidth = w;
+
+		DWORD dw;
+		ar >> dw;
+		m_PenColor = dw;
+
 		m_pointArray.Serialize(ar);
 	}
 }
@@ -222,7 +232,7 @@ void CStroke::Serialize(CArchive& ar)
 BOOL CStroke::DrawStroke(CDC* pDC)
 {
 	CPen penStroke;
-	if (!penStroke.CreatePen(PS_SOLID, m_nPenWidth, RGB(0,0,0)))
+	if (!penStroke.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor))
 		return FALSE;
 	CPen* pOldPen = pDC->SelectObject(&penStroke);
 
@@ -261,7 +271,7 @@ void CScribblenewDoc::ReplacePen(){
 	m_nPenWidth = m_bThickPen? m_nThickWidth : m_nThinWidth;
 	//change current pen to new width pen
 	m_penCur.DeleteObject(); 
-	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0,0,0));
+	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor);
 }
 
 void CScribblenewDoc::OnUpdatePenThickline(CCmdUI *pCmdUI)
@@ -325,4 +335,17 @@ void CStroke::FinishStroke()
 	//add pen width
 	m_rectBounding.InflateRect(CSize(m_nPenWidth, m_nPenWidth));
 	return;
+}
+
+
+
+void CScribblenewDoc::OnPenColor() //pick color
+{
+	// TODO: Add your command handler code here
+	CColorDialog dlg(m_PenColor);
+	if(dlg.DoModal() == IDOK) //allowed user pick on color
+	{
+		m_PenColor = dlg.GetColor();
+		ReplacePen(); 
+	}
 }

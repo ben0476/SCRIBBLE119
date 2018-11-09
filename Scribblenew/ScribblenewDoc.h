@@ -8,12 +8,12 @@
 class CStroke : public CObject
 {
 public:
-	CStroke(UINT nPenWidth);
-
+	//CStroke( UINT nPenWidth );
+	CStroke(UINT nPenWidth, COLORREF PenColor = RGB(0, 0, 0) );
 protected:
 	CStroke();
 	DECLARE_SERIAL(CStroke)
-
+	COLORREF m_PenColor;
 	// Attributes
 protected:
 	UINT  m_nPenWidth;    // pen width 
@@ -34,6 +34,7 @@ public:
 public:
 	virtual void Serialize(CArchive& ar);
 };
+
 class CScribblenewDoc : public CDocument
 {
 protected: // 僅從序列化建立
@@ -52,7 +53,7 @@ protected:
 	BOOL            m_bThickPen;       // TRUE if current pen is thick
 	UINT            m_nThinWidth;
 	UINT            m_nThickWidth;
-	
+	COLORREF        m_PenColor;
 	
 
 // 作業
@@ -95,5 +96,7 @@ public:
 	afx_msg void OnUpdatePenThickline(CCmdUI *pCmdUI);
 	afx_msg void OnUpdatePenClearall(CCmdUI *pCmdUI);
 	afx_msg void OnPenWidths();
+	;
+	afx_msg void OnPenColor();
 };
 
