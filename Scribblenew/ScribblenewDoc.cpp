@@ -211,7 +211,7 @@ void CStroke::Serialize(CArchive& ar)
 	{
 		ar << m_rectBounding;
 		ar << (WORD)m_nPenWidth;  //save
-		ar << (DWORD)m_PenColor;
+		ar << (COLORREF)m_PenColor;
 
 		m_pointArray.Serialize(ar);
 	}
@@ -222,9 +222,9 @@ void CStroke::Serialize(CArchive& ar)
 		ar >> w;
 		m_nPenWidth = w;
 
-		DWORD dw;
-		ar >> dw;
-		m_PenColor = dw;
+		COLORREF c;
+		ar >> c;
+		m_PenColor = c;
 
 		m_pointArray.Serialize(ar);
 	}

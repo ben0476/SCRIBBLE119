@@ -172,7 +172,7 @@ BEGIN
     BEGIN
         MENUITEM "Thick Line",                  ID_PEN_THICKLINE
         MENUITEM "Widths",                      ID_PEN_WIDTHS
-        MENUITEM "Pen Color",                   ID_PEN_Color
+        MENUITEM "Pen Color     Ctrl + R",      ID_PEN_Color
         MENUITEM "Clear All",                   ID_PEN_CLEARALL
     END
 END
