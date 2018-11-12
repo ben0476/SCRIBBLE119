@@ -45,6 +45,11 @@ BEGIN_MESSAGE_MAP(CPenWidthsDlg, CDialog)
 
 	ON_EN_CHANGE(IDC_THICK_PEN_WIDTH, &CPenWidthsDlg::OnEnChangeThickPenWidth)
 	ON_WM_HSCROLL()
+//	ON_WM_KILLFOCUS()
+ON_EN_KILLFOCUS(IDC_THIN_PEN_EIDTH, &CPenWidthsDlg::OnEnKillfocusThinPenEidth)
+//ON_EN_HSCROLL(IDC_THICK_PEN_WIDTH, &CPenWidthsDlg::OnEnHscrollThickPenWidth)
+ON_EN_KILLFOCUS(IDC_THICK_PEN_WIDTH, &CPenWidthsDlg::OnEnKillfocusThickPenWidth)
+ON_WM_HOTKEY()
 END_MESSAGE_MAP()
 
 
@@ -56,21 +61,18 @@ void CPenWidthsDlg::OnBnClickedDefault()
 	// TODO: Add your control notification handler code here
 	m_nThinWidth = 2;
 	m_nThickWidth = 4;
-	m_SlThinWidth.SetPos(m_nThinWidth);
-	m_SlThickWidth.SetPos(m_nThickWidth);
-	UpdateData(FALSE); 
+	UdatePenWidthValue();
 }
 
 BOOL CPenWidthsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();// **********remember to reset position all the time 
 	m_SlThinWidth.SetRange(1,20,TRUE); //slider range 1-20
-	m_SlThinWidth.SetPos(m_nThinWidth);
+	//m_SlThinWidth.SetPos(m_nThinWidth); //get default value from InitDocument() and set pos 
 	m_SlThickWidth.SetRange(1,20,TRUE);
-	m_SlThickWidth.SetPos(m_nThickWidth);
-	
-	UpdateData(FALSE); 
-
+   //m_SlThickWidth.SetPos(m_nThickWidth);
+	UdatePenWidthValue();
+	RegisterHotKey( GetSafeHwnd(),1002, MOD_CONTROL , 0x56); //0x56 is ‘v’
 	return TRUE; 
 }
 
@@ -91,12 +93,14 @@ void CPenWidthsDlg::OnEnChangeThinPenEidth()
 	{
 		m_nThinWidth = m_nThickWidth;
 	}
+	else
+	{
+		m_nThinWidth = m_nThinWidth;
+	}
     m_SlThinWidth.SetPos(m_nThinWidth); //set slider position
-	UpdateData(FALSE);
+	//UpdateData(FALSE);
+	
 }
-
-
-
 
 void CPenWidthsDlg::OnEnChangeThickPenWidth()
 {
@@ -115,8 +119,13 @@ void CPenWidthsDlg::OnEnChangeThickPenWidth()
 	{  
 		m_nThickWidth = m_nThinWidth;   
 	}   
+	else 
+	{
+		m_nThickWidth = m_nThickWidth;
+	}
 	m_SlThickWidth.SetPos(m_nThickWidth);  //set slider position 
-	UpdateData(FALSE);
+	//UpdateData(FALSE);
+	
 }
 
 
@@ -124,19 +133,52 @@ void CPenWidthsDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 
 	// TODO: Add your message handler code here and/or call default
-	if(pScrollBar == (CScrollBar *) &m_SlThickWidth){
-		m_nThickWidth = m_SlThickWidth.GetPos(); //get slider position to value
-		if(m_nThickWidth < m_nThinWidth)  //thick can't smaller than thin
-			m_nThickWidth = m_nThinWidth;
-		m_SlThickWidth.SetPos(m_nThickWidth); // set slider new position 
-		UpdateData(FALSE);
-	}
-	else if(pScrollBar == (CScrollBar *) &m_SlThinWidth){
+	
+	if(pScrollBar == (CScrollBar *) &m_SlThinWidth){
 		m_nThinWidth = m_SlThinWidth.GetPos();
 		if(m_nThinWidth > m_nThickWidth) 
 			m_nThinWidth = m_nThickWidth;
-		m_SlThinWidth.SetPos(m_nThinWidth);	
-		UpdateData(FALSE);
+		
 	}
+	else if(pScrollBar == (CScrollBar *) &m_SlThickWidth){
+		m_nThickWidth = m_SlThickWidth.GetPos(); //get slider position to value
+		if(m_nThickWidth < m_nThinWidth)  //thick can't smaller than thin
+			m_nThickWidth = m_nThinWidth;
+		
+	}
+	UdatePenWidthValue();
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CPenWidthsDlg::UdatePenWidthValue()
+{
+
+	m_SlThinWidth.SetPos(m_nThinWidth); //set slider position
+	SetDlgItemInt(IDC_THIN_PEN_EIDTH, m_nThinWidth);
+
+	m_SlThickWidth.SetPos(m_nThickWidth);
+	SetDlgItemInt(IDC_THICK_PEN_WIDTH, m_nThickWidth);
+}
+
+void CPenWidthsDlg::OnEnKillfocusThinPenEidth()
+{
+	// TODO: 在此加入控制項告知處理常式程式碼
+	UdatePenWidthValue();
+}
+
+void CPenWidthsDlg::OnEnKillfocusThickPenWidth()
+{
+	// TODO: 在此加入控制項告知處理常式程式碼
+	UdatePenWidthValue();
+}
+
+
+
+
+
+void CPenWidthsDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CDialog::OnHotKey(nHotKeyId, nKey1, nKey2);
 }

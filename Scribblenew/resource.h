@@ -15,7 +15,6 @@
 #define IDC_SLIDER1                     1004
 #define IDC_THIN_SLIDER                 1004
 #define IDC_SLIDER2                     1005
-#define IDC_THICH_SLIDER                1005
 #define IDC_THICK_SLIDER                1005
 #define IDOK_WIDTH                      1006
 #define ID_PEN_THICKLINE                32771

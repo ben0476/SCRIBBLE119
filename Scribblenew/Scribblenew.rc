@@ -200,7 +200,6 @@ BEGIN
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     "R",            ID_PEN_Color,           VIRTKEY, CONTROL, NOINVERT
-    VK_RETURN,      IDOK_WIDTH,             VIRTKEY, NOINVERT
 END
 
 

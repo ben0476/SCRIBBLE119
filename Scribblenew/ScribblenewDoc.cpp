@@ -13,7 +13,6 @@
 #include "PenWidthsDlg.h"
 #include <propkey.h>
 #include "ScribblenewView.h"
-#include <afxwin.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -350,4 +349,3 @@ void CScribblenewDoc::OnPenColor() //pick color
 		ReplacePen(); 
 	}
 }
-
