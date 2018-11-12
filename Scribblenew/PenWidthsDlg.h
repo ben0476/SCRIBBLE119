@@ -13,8 +13,7 @@ public:
 	CPenWidthsDlg(CWnd* pParent = NULL);   // standard constructor
 	CPenWidthsDlg(int nTextThinWidth, int nTextThickWidth, CWnd* pParent = NULL);
 	virtual ~CPenWidthsDlg();
-	void    UdatePenWidthValue();
-	//virtual BOOL    PreTranslateMessage(MSG* pMsg);
+
 // Dialog Data
 	enum { IDD = IDD_PEN_WIDTHS };
 	
@@ -36,9 +35,4 @@ public:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CEdit THINEDC;
 	CEdit THICKEDC;
-//	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnEnKillfocusThinPenEidth();
-//	afx_msg void OnEnHscrollThickPenWidth();
-	afx_msg void OnEnKillfocusThickPenWidth();
-	
 };

@@ -3,7 +3,4 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
-  <PropertyGroup>
-    <RESOURCE_FILE>Scribblenew.rc</RESOURCE_FILE>
-  </PropertyGroup>
 </Project>

@@ -174,7 +174,7 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 	m_sizeDoc = CSize(900,1500);
 
 	//recall m_penCur will cause crash
-  // m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0,0,0));
+  //  m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0,0,0));
 }
 
 CStroke* CScribblenewDoc::NewStroke()
