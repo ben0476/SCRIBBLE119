@@ -13,6 +13,7 @@
 #include "PenWidthsDlg.h"
 #include <propkey.h>
 #include "ScribblenewView.h"
+#include <afxwin.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -349,3 +350,14 @@ void CScribblenewDoc::OnPenColor() //pick color
 		ReplacePen(); 
 	}
 }
+
+//BOOL CScribblenewDoc::PreTranslateMessage(MSG *pMsg)
+//{   
+//	if ( pMsg->message == WM_KEYDOWN)
+//	{
+//		if (( pMsg->wParam == VK_F9))
+//			OnPenColor(); // Delete Item
+//	}
+//
+//	return CScribblenewDoc::PreTranslateMessage(pMsg);
+//}

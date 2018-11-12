@@ -98,5 +98,6 @@ public:
 	afx_msg void OnPenWidths();
 	;
 	afx_msg void OnPenColor();
+	BOOL PreTranslateMessage(MSG *pMsg);
 };
 
