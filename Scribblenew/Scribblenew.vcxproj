@@ -101,6 +101,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CanvasDlg.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PenWidthsDlg.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CanvasDlg.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PenWidthsDlg.cpp" />

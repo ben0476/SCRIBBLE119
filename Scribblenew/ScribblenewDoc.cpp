@@ -13,6 +13,7 @@
 #include "PenWidthsDlg.h"
 #include <propkey.h>
 #include "ScribblenewView.h"
+#include "CanvasDlg.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -28,6 +29,8 @@ BEGIN_MESSAGE_MAP(CScribblenewDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_PEN_CLEARALL, &CScribblenewDoc::OnUpdatePenClearall)
 	ON_COMMAND(ID_PEN_WIDTHS, &CScribblenewDoc::OnPenWidths)
 	ON_COMMAND(ID_PEN_Color, &CScribblenewDoc::OnPenColor)
+//	ON_COMMAND(IDD_CANVAS, &CScribblenewDoc::OnIddCanvas)
+	ON_COMMAND(ID_FILE_NEW, &CScribblenewDoc::OnFileNew)
 END_MESSAGE_MAP()
 
 
@@ -168,7 +171,7 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 	m_nPenWidth = 2; //  2 pixel pen width
 	m_nThinWidth = 2;   //  thin pen is 2 pixels wide
 	m_nThickWidth = 4;  //  thick pen is 4 pixels wide
-	m_PenColor = RGB(0, 0, 0);
+	m_PenColor = RGB(0, 0, 0); // default pen color is black
 	ReplacePen();	
 
 	m_sizeDoc = CSize(900,1500);
@@ -180,7 +183,8 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 CStroke* CScribblenewDoc::NewStroke()
 {
 	//creat new CStroke and add into list tail
-	CStroke* pStrokeItem = new CStroke(m_nPenWidth,m_PenColor); 
+	//add pen color item, so we can save color
+	CStroke* pStrokeItem = new CStroke(m_nPenWidth,m_PenColor);
 	
 	m_strokeList.AddTail(pStrokeItem);
 	SetModifiedFlag();
@@ -189,7 +193,7 @@ CStroke* CScribblenewDoc::NewStroke()
 }
 
 
-///////////////////////////////////////Cstroke
+///////////////////////////////////////Cstroke///////////////////////////////////
 
 IMPLEMENT_SERIAL(CStroke, CObject, 2)
 	CStroke::CStroke()
@@ -197,7 +201,7 @@ IMPLEMENT_SERIAL(CStroke, CObject, 2)
 	// This empty constructor should be used by serialization only
 }
 
-CStroke::CStroke(UINT nPenWidth, COLORREF PenColor)
+CStroke::CStroke(UINT nPenWidth, COLORREF PenColor) // add color item
 {
 	m_nPenWidth = nPenWidth;
 	m_PenColor =  PenColor; 
@@ -211,13 +215,14 @@ void CStroke::Serialize(CArchive& ar)
 	{
 		ar << m_rectBounding;
 		ar << (WORD)m_nPenWidth;  //save
-		ar << (COLORREF)m_PenColor;
+		ar << (COLORREF)m_PenColor;//save
 
 		m_pointArray.Serialize(ar);
 	}
 	else
 	{    //load
 		ar >> m_rectBounding;
+
 		WORD w;
 		ar >> w;
 		m_nPenWidth = w;
@@ -233,7 +238,7 @@ void CStroke::Serialize(CArchive& ar)
 BOOL CStroke::DrawStroke(CDC* pDC)
 {
 	CPen penStroke;
-	if (!penStroke.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor))
+	if (!penStroke.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor)) //draw with our width and color
 		return FALSE;
 	CPen* pOldPen = pDC->SelectObject(&penStroke);
 
@@ -272,7 +277,7 @@ void CScribblenewDoc::ReplacePen(){
 	m_nPenWidth = m_bThickPen? m_nThickWidth : m_nThinWidth;
 	//change current pen to new width pen
 	m_penCur.DeleteObject(); 
-	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor);
+	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor); //after change pen setting, creat a new pen to show
 }
 
 void CScribblenewDoc::OnUpdatePenThickline(CCmdUI *pCmdUI)
@@ -350,3 +355,22 @@ void CScribblenewDoc::OnPenColor() //pick color
 		ReplacePen(); 
 	}
 }
+
+void CScribblenewDoc::OnFileNew()
+{
+	// TODO: Add your command handler code here
+	CanvasDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		
+	}
+}
+
+
+
+
+
+
+
+

@@ -9,6 +9,7 @@ class CStroke : public CObject
 {
 public:
 	//CStroke( UINT nPenWidth );
+	//add pen color item 
 	CStroke(UINT nPenWidth, COLORREF PenColor = RGB(0, 0, 0) );
 protected:
 	CStroke();
@@ -17,8 +18,8 @@ protected:
 	// Attributes
 protected:
 	UINT  m_nPenWidth;    // pen width 
-	CRect               m_rectBounding; // smallest rect that surrounds all
-	COLORREF m_PenColor;
+	CRect m_rectBounding; // smallest rect that surrounds all
+	COLORREF m_PenColor;  //pen color
 public:
 	CArray<CPoint,CPoint>  m_pointArray;   // draw points
 	
@@ -100,5 +101,7 @@ public:
 	afx_msg void OnPenWidths();
 	;
 	afx_msg void OnPenColor();
+	//afx_msg void OnIddCanvas();
+	afx_msg void OnFileNew();
 };
 

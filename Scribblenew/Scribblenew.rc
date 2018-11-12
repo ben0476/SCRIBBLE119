@@ -140,7 +140,7 @@ BEGIN
         MENUITEM "預覽列印(&V)",                    ID_FILE_PRINT_PREVIEW
         MENUITEM "列印設定(&R)...",                 ID_FILE_PRINT_SETUP
         MENUITEM SEPARATOR
-        MENUITEM "最近使用的檔案",                     ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "最近使用的檔案",                     ID_FILE_MRU_FILE1
         MENUITEM SEPARATOR
         MENUITEM "結束(&X)",                      ID_APP_EXIT
     END
@@ -172,7 +172,7 @@ BEGIN
     BEGIN
         MENUITEM "Thick Line",                  ID_PEN_THICKLINE
         MENUITEM "Widths",                      ID_PEN_WIDTHS
-        MENUITEM "Pen Color     Ctrl + R",      ID_PEN_Color
+        MENUITEM "Pen Color      Ctrl+R",       ID_PEN_Color
         MENUITEM "Clear All",                   ID_PEN_CLEARALL
     END
 END
@@ -221,7 +221,7 @@ END
 
 IDD_PEN_WIDTHS DIALOGEX 0, 0, 253, 117
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Dialog"
+CAPTION "Pen Width"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,102,96,50,14
@@ -233,6 +233,22 @@ BEGIN
     EDITTEXT        IDC_THICK_PEN_WIDTH,196,63,49,14,ES_AUTOHSCROLL
     CONTROL         "",IDC_THIN_SLIDER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,88,26,100,15
     CONTROL         "",IDC_THICK_SLIDER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,88,63,100,15
+END
+
+IDD_CANVAS DIALOGEX 0, 0, 185, 81
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_NOPARENTNOTIFY
+CAPTION "Canvas Properties"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,127,13,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,127,34,50,14
+    PUSHBUTTON      "Color",IDC_Background_Color,6,60,50,14
+    EDITTEXT        IDC_Canvas_Width,48,13,54,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_Canvas_Height,48,34,54,14,ES_AUTOHSCROLL
+    LTEXT           "Width",IDC_STATIC,9,15,20,8
+    LTEXT           "Height",IDC_STATIC,9,37,22,8
+    LTEXT           "",IDC_Color_Pick,63,60,38,14,WS_BORDER
 END
 
 
@@ -298,6 +314,17 @@ BEGIN
         VERTGUIDE, 196
         TOPMARGIN, 7
         BOTTOMMARGIN, 110
+    END
+
+    IDD_CANVAS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        VERTGUIDE, 101
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+        HORZGUIDE, 40
+        HORZGUIDE, 60
     END
 END
 #endif    // APSTUDIO_INVOKED

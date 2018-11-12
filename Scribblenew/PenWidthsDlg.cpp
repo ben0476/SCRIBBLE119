@@ -155,7 +155,7 @@ void CPenWidthsDlg::UdatePenWidthValue()
 {
 
 	m_SlThinWidth.SetPos(m_nThinWidth); //set slider position
-	SetDlgItemInt(IDC_THIN_PEN_EIDTH, m_nThinWidth);
+	SetDlgItemInt(IDC_THIN_PEN_EIDTH, m_nThinWidth);//set text
 
 	m_SlThickWidth.SetPos(m_nThickWidth);
 	SetDlgItemInt(IDC_THICK_PEN_WIDTH, m_nThickWidth);
