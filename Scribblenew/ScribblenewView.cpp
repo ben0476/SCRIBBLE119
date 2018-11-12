@@ -29,8 +29,8 @@ BEGIN_MESSAGE_MAP(CScribblenewView, CScrollView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
-	ON_WM_HSCROLL()
-	ON_WM_VSCROLL()
+//	ON_WM_HSCROLL()
+//	ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
 // CScribblenewView «Øºc/¸Ñºc
@@ -83,7 +83,7 @@ void CScribblenewView::OnDraw(CDC* pDC)
 	POSITION pos = strokeList.GetHeadPosition();
 	while (pos != NULL)
 	{
-		BOOL ll =FALSE;
+		//BOOL ll =FALSE;
 		CStroke* pStroke = strokeList.GetNext(pos);
 		CRect rectStroke,RrectStroke;
 		rectStroke.NormalizeRect();
@@ -259,20 +259,20 @@ void CScribblenewView::OnInitialUpdate()
 }
 
 
-void CScribblenewView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	// TODO: Add your message handler code here and/or call default
+//void CScribblenewView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+//{
+//	// TODO: Add your message handler code here and/or call default
+//
+//	CScrollView::OnHScroll(nSBCode, nPos, pScrollBar);
+//}
 
-	CScrollView::OnHScroll(nSBCode, nPos, pScrollBar);
-}
 
-
-void CScribblenewView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	// TODO: Add your message handler code here and/or call default
-	CClientDC dc(this);
-	
-	
-	CScrollView::OnVScroll(nSBCode, nPos, pScrollBar);
-}
+//void CScribblenewView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+//{
+//	// TODO: Add your message handler code here and/or call default
+//	CClientDC dc(this);
+//	
+//	
+//	CScrollView::OnVScroll(nSBCode, nPos, pScrollBar);
+//}
 

@@ -49,7 +49,8 @@ BEGIN_MESSAGE_MAP(CPenWidthsDlg, CDialog)
 ON_EN_KILLFOCUS(IDC_THIN_PEN_EIDTH, &CPenWidthsDlg::OnEnKillfocusThinPenEidth)
 //ON_EN_HSCROLL(IDC_THICK_PEN_WIDTH, &CPenWidthsDlg::OnEnHscrollThickPenWidth)
 ON_EN_KILLFOCUS(IDC_THICK_PEN_WIDTH, &CPenWidthsDlg::OnEnKillfocusThickPenWidth)
-ON_WM_HOTKEY()
+//ON_WM_HOTKEY()
+ON_BN_CLICKED(IDOK, &CPenWidthsDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -72,7 +73,7 @@ BOOL CPenWidthsDlg::OnInitDialog()
 	m_SlThickWidth.SetRange(1,20,TRUE);
    //m_SlThickWidth.SetPos(m_nThickWidth);
 	UdatePenWidthValue();
-	RegisterHotKey( GetSafeHwnd(),1002, MOD_CONTROL , 0x56); //0x56 is ．v・
+	//RegisterHotKey( GetSafeHwnd(),1002, MOD_CONTROL , 0x56); //0x56 is ．v・
 	return TRUE; 
 }
 
@@ -172,13 +173,9 @@ void CPenWidthsDlg::OnEnKillfocusThickPenWidth()
 	UdatePenWidthValue();
 }
 
-
-
-
-
-void CPenWidthsDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
+void CPenWidthsDlg::OnBnClickedOk()
 {
-	// TODO: Add your message handler code here and/or call default
-
-	CDialog::OnHotKey(nHotKeyId, nKey1, nKey2);
+	// TODO: Add your control notification handler code here
+	UdatePenWidthValue();
+	CDialog::OnOK();
 }

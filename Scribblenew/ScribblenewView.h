@@ -52,8 +52,8 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void OnUpdate(CView* /* pSender */, LPARAM /* lHint */, CObject* pHint);
 	afx_msg void OnPaint();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+//	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+//	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	void ResyncScrollSizes();
 };
 

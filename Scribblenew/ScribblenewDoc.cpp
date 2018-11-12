@@ -168,6 +168,7 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 	m_nPenWidth = 2; //  2 pixel pen width
 	m_nThinWidth = 2;   //  thin pen is 2 pixels wide
 	m_nThickWidth = 4;  //  thick pen is 4 pixels wide
+	m_PenColor = RGB(0, 0, 0);
 	ReplacePen();	
 
 	m_sizeDoc = CSize(900,1500);
@@ -179,7 +180,7 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 CStroke* CScribblenewDoc::NewStroke()
 {
 	//creat new CStroke and add into list tail
-	CStroke* pStrokeItem = new CStroke(m_nPenWidth); 
+	CStroke* pStrokeItem = new CStroke(m_nPenWidth,m_PenColor); 
 	
 	m_strokeList.AddTail(pStrokeItem);
 	SetModifiedFlag();

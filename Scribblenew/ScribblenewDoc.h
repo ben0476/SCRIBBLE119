@@ -13,23 +13,25 @@ public:
 protected:
 	CStroke();
 	DECLARE_SERIAL(CStroke)
-	COLORREF m_PenColor;
+	
 	// Attributes
 protected:
 	UINT  m_nPenWidth;    // pen width 
+	CRect               m_rectBounding; // smallest rect that surrounds all
+	COLORREF m_PenColor;
 public:
 	CArray<CPoint,CPoint>  m_pointArray;   // draw points
-	CRect               m_rectBounding; // smallest rect that surrounds all
+	
 	// of the points in the stroke
 	// measured in MM_LOENGLISH units
 	// (0.01 inches, with Y-axis inverted)
 public:
-	CRect GetBoundingRect() { return m_rectBounding; }
-    void FinishStroke();
+	CRect& GetBoundingRect() { return m_rectBounding; }
+    
 	// Operations
 public:
 	BOOL DrawStroke(CDC* pDC);
-	
+	void FinishStroke();
 
 public:
 	virtual void Serialize(CArchive& ar);
@@ -41,7 +43,7 @@ protected: // 僅從序列化建立
 	CScribblenewDoc();
 	DECLARE_DYNCREATE(CScribblenewDoc)
 	void ReplacePen();
-	CSize           m_sizeDoc;
+	
 // 屬性
 public:
 	CTypedPtrList<CObList,CStroke*> m_strokeList; //List 
@@ -54,7 +56,7 @@ protected:
 	UINT            m_nThinWidth;
 	UINT            m_nThickWidth;
 	COLORREF        m_PenColor;
-	
+	CSize           m_sizeDoc;
 
 // 作業
 public:
