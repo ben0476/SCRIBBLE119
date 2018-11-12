@@ -351,13 +351,3 @@ void CScribblenewDoc::OnPenColor() //pick color
 	}
 }
 
-//BOOL CScribblenewDoc::PreTranslateMessage(MSG *pMsg)
-//{   
-//	if ( pMsg->message == WM_KEYDOWN)
-//	{
-//		if (( pMsg->wParam == VK_F9))
-//			OnPenColor(); // Delete Item
-//	}
-//
-//	return CScribblenewDoc::PreTranslateMessage(pMsg);
-//}

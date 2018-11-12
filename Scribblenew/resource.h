@@ -17,6 +17,7 @@
 #define IDC_SLIDER2                     1005
 #define IDC_THICH_SLIDER                1005
 #define IDC_THICK_SLIDER                1005
+#define IDOK_WIDTH                      1006
 #define ID_PEN_THICKLINE                32771
 #define ID_PEN_WIDTHS                   32772
 #define ID_PEN_CLEARALL                 32773
@@ -28,8 +29,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
