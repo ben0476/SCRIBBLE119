@@ -72,13 +72,33 @@ void CScribblenewView::OnDraw(CDC* pDC)
 		
 		pStroke->DrawStroke(pDC);
 	}*/
+	
 	CRect rectClip;
-	rectClip.NormalizeRect();
+	//rectClip.NormalizeRect();
 	//get seeing area
 	pDC->GetClipBox(&rectClip);
+
+	CSize CanvasSize = pDoc->GetDocSize();  //get canvas size we set
+	CRect CanvasRect = rectClip;
+	CanvasRect.SetRect(0,0, CanvasSize.cx,  CanvasSize.cy); //set canvas rect
+
+	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
+	pDC->FillSolidRect(CanvasRect ,pDoc->GetBackgroundColor());
 	pDC->LPtoDP(&rectClip);
 	rectClip.InflateRect(1, 1); // avoid rounding to nothing
-	 
+
+
+	
+	
+
+	
+	/*CSize docsize = pDoc->GetDocSize();
+	CRect rectDoc = rectClip;
+	rectDoc.SetRect(0,0,docsize.cx, 0 - docsize.cy);*/
+	
+	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
+	//pDC->FillSolidRect(rectClip ,pDoc->GetBackgroundColor());
+
 	CTypedPtrList<CObList,CStroke*>& strokeList = pDoc->m_strokeList;
 	POSITION pos = strokeList.GetHeadPosition();
 	while (pos != NULL)

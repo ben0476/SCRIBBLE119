@@ -53,7 +53,14 @@ BOOL CScribblenewDoc::OnNewDocument()
 
 	// TODO: 在此加入重新初始化程式碼
 	// (SDI 文件會重用此文件)
-	InitDocument();//
+	CanvasDlg dlg;
+	if(dlg.DoModal() == IDOK )
+	{
+		m_sizeDoc = CSize(dlg.m_CanvasWidthV, dlg.m_CanvasHeightV);
+		m_MBackgroundColor = dlg.m_BackgroundColor;
+		InitDocument();
+		return TRUE;
+	}
 	return TRUE;
 }
 
@@ -173,8 +180,6 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 	m_nThickWidth = 4;  //  thick pen is 4 pixels wide
 	m_PenColor = RGB(0, 0, 0); // default pen color is black
 	ReplacePen();	
-
-	m_sizeDoc = CSize(900,1500);
 
 	//recall m_penCur will cause crash
   //  m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0,0,0));
