@@ -30,7 +30,7 @@ BEGIN_MESSAGE_MAP(CScribblenewDoc, CDocument)
 	ON_COMMAND(ID_PEN_WIDTHS, &CScribblenewDoc::OnPenWidths)
 	ON_COMMAND(ID_PEN_Color, &CScribblenewDoc::OnPenColor)
 //	ON_COMMAND(IDD_CANVAS, &CScribblenewDoc::OnIddCanvas)
-	ON_COMMAND(ID_FILE_NEW, &CScribblenewDoc::OnFileNew)
+//	ON_COMMAND(ID_FILE_NEW, &CScribblenewDoc::OnFileNew)
 END_MESSAGE_MAP()
 
 
@@ -51,9 +51,8 @@ BOOL CScribblenewDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: 在此加入重新初始化程式碼
-	// (SDI 文件會重用此文件)
-	CanvasDlg dlg;
+    //call Canvas DLG
+	CanvasDlg dlg; 
 	if(dlg.DoModal() == IDOK )
 	{
 		m_sizeDoc = CSize(dlg.m_CanvasWidthV, dlg.m_CanvasHeightV);
@@ -361,16 +360,16 @@ void CScribblenewDoc::OnPenColor() //pick color
 	}
 }
 
-void CScribblenewDoc::OnFileNew()
-{
-	// TODO: Add your command handler code here
-	CanvasDlg dlg;
-
-	if (dlg.DoModal() == IDOK)
-	{
-		
-	}
-}
+//void CScribblenewDoc::OnFileNew()
+//{
+//	// TODO: Add your command handler code here
+//	CanvasDlg dlg;
+//
+//	if (dlg.DoModal() == IDOK)
+//	{
+//		
+//	}
+//}
 
 
 

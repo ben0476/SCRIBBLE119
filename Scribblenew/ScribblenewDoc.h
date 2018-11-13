@@ -104,6 +104,6 @@ public:
 	;
 	afx_msg void OnPenColor();
 	//afx_msg void OnIddCanvas();
-	afx_msg void OnFileNew();
+//	afx_msg void OnFileNew();
 };
 

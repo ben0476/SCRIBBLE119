@@ -38,11 +38,14 @@ END_MESSAGE_MAP()
 CScribblenewView::CScribblenewView()
 {
 	// TODO: 在此加入建構程式碼
-
+	m_pdcDisplayMemory = new CDC;
+	m_pBitmap = new CBitmap;
 }
 
 CScribblenewView::~CScribblenewView()
 {
+	delete m_pdcDisplayMemory;
+	delete m_pBitmap;
 }
 
 BOOL CScribblenewView::PreCreateWindow(CREATESTRUCT& cs)
@@ -63,24 +66,13 @@ void CScribblenewView::OnDraw(CDC* pDC)
 		return;
 	// TODO: 在此加入原生資料的描繪程式碼
 	//
-
-/*	CTypedPtrList<CObList,CStroke*>& strokeList = pDoc->m_strokeList;
-	POSITION pos = strokeList.GetHeadPosition();
-	while (pos != NULL)
-	{
-		CStroke* pStroke = strokeList.GetNext(pos);
-		
-		pStroke->DrawStroke(pDC);
-	}*/
-	
 	CRect rectClip;
-	//rectClip.NormalizeRect();
 	//get seeing area
 	pDC->GetClipBox(&rectClip);
 
 	CSize CanvasSize = pDoc->GetDocSize();  //get canvas size we set
 	CRect CanvasRect = rectClip;
-	CanvasRect.SetRect(0,0, CanvasSize.cx,  CanvasSize.cy); //set canvas rect
+	CanvasRect.SetRect(0,0, CanvasSize.cx, 0- CanvasSize.cy); //set canvas rect
 
 	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
 	pDC->FillSolidRect(CanvasRect ,pDoc->GetBackgroundColor());
@@ -89,15 +81,6 @@ void CScribblenewView::OnDraw(CDC* pDC)
 
 
 	
-	
-
-	
-	/*CSize docsize = pDoc->GetDocSize();
-	CRect rectDoc = rectClip;
-	rectDoc.SetRect(0,0,docsize.cx, 0 - docsize.cy);*/
-	
-	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
-	//pDC->FillSolidRect(rectClip ,pDoc->GetBackgroundColor());
 
 	CTypedPtrList<CObList,CStroke*>& strokeList = pDoc->m_strokeList;
 	POSITION pos = strokeList.GetHeadPosition();
@@ -200,8 +183,8 @@ void CScribblenewView::OnLButtonUp(UINT nFlags, CPoint point)
 	OnPrepareDC(&dc); 
 	dc.DPtoLP(&point);
 
-	CPen* pOldPen = dc.SelectObject(pDoc->GetCurrentPen());
 
+	CPen* pOldPen = dc.SelectObject(pDoc->GetCurrentPen());
 	dc.MoveTo(m_ptPrev);
 	dc.LineTo(point);
 
@@ -273,7 +256,8 @@ void CScribblenewView::OnUpdate(CView* /* pSender */, LPARAM /* lHint */,
 
 void CScribblenewView::OnInitialUpdate() 
 {
-	SetScrollSizes(MM_TEXT, GetDocument()->GetDocSize());
+	//MM_LOENGLISH  Each logical unit is converted to 0.01 inch.Positive x is to the right; positive y is up.
+	SetScrollSizes(MM_LOENGLISH, GetDocument()->GetDocSize());
 	
 	CScrollView::OnInitialUpdate();
 }
