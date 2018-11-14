@@ -98,9 +98,7 @@ void CScribblenewView::OnDraw(CDC* pDC)
 
 /*			if (!RrectStroke.IntersectRect(&rectStroke, &rectClip))
 			continue;*/
-		pDC->SelectClipRgn(NULL);
-		pDC->IntersectClipRect(0, 0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
-
+	
 
 		pStroke->DrawStroke(pDC);
 		
@@ -187,8 +185,6 @@ void CScribblenewView::OnLButtonUp(UINT nFlags, CPoint point)
 	OnPrepareDC(&dc); 
 	dc.DPtoLP(&point);
 
-	dc.SelectClipRgn(NULL);
-	dc.IntersectClipRect(0 ,0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
 
 	CPen* pOldPen = dc.SelectObject(pDoc->GetCurrentPen());
 	dc.MoveTo(m_ptPrev);
@@ -220,9 +216,6 @@ void CScribblenewView::OnMouseMove(UINT nFlags, CPoint point)
 	dc.DPtoLP(&point);
 
 	m_pStrokeCur->m_pointArray.Add(point);
-
-	dc.SelectClipRgn(NULL);
-	dc.IntersectClipRect(0 ,0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
 
 	// Draw a line from the previous detected point in the mouse
 	// drag to the current point.
