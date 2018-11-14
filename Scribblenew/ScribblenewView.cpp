@@ -1,10 +1,10 @@
-
-// ScribblenewView.cpp : CScribblenewView Ãş§Oªº¹ê§@
+ï»¿
+// ScribblenewView.cpp : CScribblenewView é¡åˆ¥çš„å¯¦ä½œ
 //
 
 #include "stdafx.h"
-// SHARED_HANDLERS ¥i¥H©w¸q¦b¹ê§@¹wÄı¡BÁY¹Ï©M·j´M¿z¿ï±ø¥ó³B²z±`¦¡ªº
-// ATL ±M®×¤¤¡A¨Ã¤¹³\»P¸Ó±M®×¦@¥Î¤å¥óµ{¦¡½X¡C
+// SHARED_HANDLERS å¯ä»¥å®šç¾©åœ¨å¯¦ä½œé è¦½ã€ç¸®åœ–å’Œæœå°‹ç¯©é¸æ¢ä»¶è™•ç†å¸¸å¼çš„
+// ATL å°ˆæ¡ˆä¸­ï¼Œä¸¦å…è¨±èˆ‡è©²å°ˆæ¡ˆå…±ç”¨æ–‡ä»¶ç¨‹å¼ç¢¼ã€‚
 #ifndef SHARED_HANDLERS
 #include "Scribblenew.h"
 #endif
@@ -22,7 +22,7 @@
 IMPLEMENT_DYNCREATE(CScribblenewView, CScrollView)
 
 BEGIN_MESSAGE_MAP(CScribblenewView, CScrollView)
-	// ¼Ğ·Ç¦C¦L©R¥O
+	// æ¨™æº–åˆ—å°å‘½ä»¤
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
@@ -33,30 +33,30 @@ BEGIN_MESSAGE_MAP(CScribblenewView, CScrollView)
 //	ON_WM_VSCROLL()
 END_MESSAGE_MAP()
 
-// CScribblenewView «Øºc/¸Ñºc
+// CScribblenewView å»ºæ§‹/è§£æ§‹
 
 CScribblenewView::CScribblenewView()
 {
-	// TODO: ¦b¦¹¥[¤J«Øºcµ{¦¡½X
-	m_pdcDisplayMemory = new CDC;
-	m_pBitmap = new CBitmap;
+	// TODO: åœ¨æ­¤åŠ å…¥å»ºæ§‹ç¨‹å¼ç¢¼
+	m_dcMemory = new CDC;
+	m_BitmapCanvas = new CBitmap;
 }
 
 CScribblenewView::~CScribblenewView()
 {
-	delete m_pdcDisplayMemory;
-	delete m_pBitmap;
+	delete m_dcMemory;
+	delete m_BitmapCanvas;
 }
 
 BOOL CScribblenewView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: ¦b¦¹¸g¥Ñ­×§ï CREATESTRUCT cs 
-	// ¹F¨ì­×§ïµøµ¡Ãş§O©Î¼Ë¦¡ªº¥Øªº
+	// TODO: åœ¨æ­¤ç¶“ç”±ä¿®æ”¹ CREATESTRUCT cs 
+	// é”åˆ°ä¿®æ”¹è¦–çª—é¡åˆ¥æˆ–æ¨£å¼çš„ç›®çš„
 
 	return CView::PreCreateWindow(cs);
 }
 
-// CScribblenewView ´yÃ¸
+// CScribblenewView æç¹ª
 
 void CScribblenewView::OnDraw(CDC* pDC)
 {
@@ -64,11 +64,12 @@ void CScribblenewView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	// TODO: ¦b¦¹¥[¤J­ì¥Í¸ê®Æªº´yÃ¸µ{¦¡½X
+	// TODO: åœ¨æ­¤åŠ å…¥åŸç”Ÿè³‡æ–™çš„æç¹ªç¨‹å¼ç¢¼
 	//
 	CRect rectClip;
 	//get seeing area
 	pDC->GetClipBox(&rectClip);
+	
 
 	CSize CanvasSize = pDoc->GetDocSize();  //get canvas size we set
 	CRect CanvasRect = rectClip;
@@ -76,9 +77,10 @@ void CScribblenewView::OnDraw(CDC* pDC)
 
 	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
 	pDC->FillSolidRect(CanvasRect ,pDoc->GetBackgroundColor());
+	
+
 	pDC->LPtoDP(&rectClip);
 	rectClip.InflateRect(1, 1); // avoid rounding to nothing
-
 
 	
 
@@ -107,26 +109,26 @@ void CScribblenewView::OnDraw(CDC* pDC)
 }
 
 
-// CScribblenewView ¦C¦L
+// CScribblenewView åˆ—å°
 
 BOOL CScribblenewView::OnPreparePrinting(CPrintInfo* pInfo)
 {
-	// ¹w³]ªº·Ç³Æ¦C¦Lµ{¦¡½X
+	// é è¨­çš„æº–å‚™åˆ—å°ç¨‹å¼ç¢¼
 	return DoPreparePrinting(pInfo);
 }
 
 void CScribblenewView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: ¥[¤J¦C¦L«eÃB¥~ªºªì©l³]©w
+	// TODO: åŠ å…¥åˆ—å°å‰é¡å¤–çš„åˆå§‹è¨­å®š
 }
 
 void CScribblenewView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: ¥[¤J¦C¦L«áªº²M°£µ{¦¡½X
+	// TODO: åŠ å…¥åˆ—å°å¾Œçš„æ¸…é™¤ç¨‹å¼ç¢¼
 }
 
 
-// CScribblenewView ¶EÂ_
+// CScribblenewView è¨ºæ–·
 
 #ifdef _DEBUG
 void CScribblenewView::AssertValid() const
@@ -139,7 +141,7 @@ void CScribblenewView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-CScribblenewDoc* CScribblenewView::GetDocument() const // ¤º´O«D°»¿ùª©¥»
+CScribblenewDoc* CScribblenewView::GetDocument() const // å…§åµŒéåµéŒ¯ç‰ˆæœ¬
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CScribblenewDoc)));
 	return (CScribblenewDoc*)m_pDocument;
@@ -147,7 +149,7 @@ CScribblenewDoc* CScribblenewView::GetDocument() const // ¤º´O«D°»¿ùª©¥»
 #endif //_DEBUG
 
 
-// CScribblenewView °T®§³B²z±`¦¡
+// CScribblenewView è¨Šæ¯è™•ç†å¸¸å¼
 
 
 void CScribblenewView::OnLButtonDown(UINT nFlags, CPoint point)
