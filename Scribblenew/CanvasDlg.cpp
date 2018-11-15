@@ -9,10 +9,10 @@
 
 // CanvasDlg dialog
 
-IMPLEMENT_DYNAMIC(CanvasDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(CanvasDlg, CDialog)
 
 CanvasDlg::CanvasDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CanvasDlg::IDD, pParent)
+	: CDialog(CanvasDlg::IDD, pParent)
 {
 
 	m_CanvasWidthV = 800;
@@ -26,17 +26,18 @@ CanvasDlg::~CanvasDlg()
 
 void CanvasDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_Canvas_Width, m_CanvasWidthV);
 	DDX_Text(pDX, IDC_Canvas_Height, m_CanvasHeightV);
 }
 
 
-BEGIN_MESSAGE_MAP(CanvasDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CanvasDlg, CDialog)
 //	ON_COMMAND(ID_FILE_NEW, &CanvasDlg::OnFileNew)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_Background_Color, &CanvasDlg::OnClickedBackgroundColor)
-END_MESSAGE_MAP()
+	
+	END_MESSAGE_MAP()
 
 
 // CanvasDlg message handlers
@@ -50,7 +51,7 @@ END_MESSAGE_MAP()
 
 HBRUSH CanvasDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 	
 
 	if(pWnd->GetDlgCtrlID() == IDC_Color_Pick)
@@ -76,3 +77,6 @@ void CanvasDlg::OnClickedBackgroundColor()
 		RedrawWindow();
 	}
 }
+
+
+

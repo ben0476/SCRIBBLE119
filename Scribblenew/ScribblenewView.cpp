@@ -31,6 +31,8 @@ BEGIN_MESSAGE_MAP(CScribblenewView, CScrollView)
 	ON_WM_MOUSEMOVE()
 //	ON_WM_HSCROLL()
 //	ON_WM_VSCROLL()
+//ON_WM_ERASEBKGND()
+ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CScribblenewView 建構/解構
@@ -38,14 +40,12 @@ END_MESSAGE_MAP()
 CScribblenewView::CScribblenewView()
 {
 	// TODO: 在此加入建構程式碼
-	m_dcMemory = new CDC;
-	m_BitmapCanvas = new CBitmap;
+	
 }
 
 CScribblenewView::~CScribblenewView()
 {
-	delete m_dcMemory;
-	delete m_BitmapCanvas;
+
 }
 
 BOOL CScribblenewView::PreCreateWindow(CREATESTRUCT& cs)
@@ -66,23 +66,34 @@ void CScribblenewView::OnDraw(CDC* pDC)
 		return;
 	// TODO: 在此加入原生資料的描繪程式碼
 	//
+	CBitmap MemBitmap;
 	CRect rectClip;
-	//get seeing area
-	pDC->GetClipBox(&rectClip);
-	
-
+	CRect rectClipf;
+	pDC->GetClipBox(&rectClip);//get seeing area
+	GetClientRect(&rectClipf);
 	CSize CanvasSize = pDoc->GetDocSize();  //get canvas size we set
 	CRect CanvasRect = rectClip;
-	CanvasRect.SetRect(0,0, CanvasSize.cx, 0- CanvasSize.cy); //set canvas rect
-
-	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
-	pDC->FillSolidRect(CanvasRect ,pDoc->GetBackgroundColor());
+	CanvasRect.SetRect(0, 0, CanvasSize.cx, 0- CanvasSize.cy); //set canvas rect
+//
+//	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
+//	//pDC->FillSolidRect(rectClip ,pDoc->GetBackgroundColor());
+//
+	// avoid rounding to nothing
 	
+	MemDC.CreateCompatibleDC(pDC);
+	bmpCanvas.CreateCompatibleBitmap(pDC, rectClip.right, rectClip.bottom);
+	CBitmap *pOldBi = MemDC.SelectObject(&bmpCanvas);
 
-	pDC->LPtoDP(&rectClip);
-	rectClip.InflateRect(1, 1); // avoid rounding to nothing
+	//pDC->SelectClipRgn(NULL);
+	//pDC->IntersectClipRect(0, 0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
+
+	MemDC.FillSolidRect(0, 0, rectClip.right, rectClip.bottom, RGB(255, 255, 255));
+	MemDC.SelectClipRgn(&Canvas);
+	MemDC.FillSolidRect(0, 0, CanvasRect.right, 0 - CanvasRect.bottom, pDoc->GetBackgroundColor());
 
 	
+	//pDC->LPtoDP(&rectClip);
+	//rectClip.InflateRect(1, -1); 
 
 	CTypedPtrList<CObList,CStroke*>& strokeList = pDoc->m_strokeList;
 	POSITION pos = strokeList.GetHeadPosition();
@@ -98,12 +109,21 @@ void CScribblenewView::OnDraw(CDC* pDC)
 
 /*			if (!RrectStroke.IntersectRect(&rectStroke, &rectClip))
 			continue;*/
-	
-
-		pStroke->DrawStroke(pDC);
+		//pDC->SelectClipRgn(NULL);
+		//pDC->IntersectClipRect(0, 0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
+		pStroke->DrawStroke(&MemDC);
 		
 	}
+
 	
+
+	pDC->BitBlt(0,0,rectClip.right,rectClip.bottom,&MemDC,0,0,SRCCOPY);
+	pDC->SelectObject(pOldBi); 
+	
+
+	bmpCanvas.DeleteObject();
+	MemDC.DeleteDC();
+                           
 }
 
 
@@ -157,7 +177,7 @@ void CScribblenewView::OnLButtonDown(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
 	dc.DPtoLP(&point);
-	
+
 	//mouse right click star painting and creat new stroke
 	m_pStrokeCur = GetDocument()->NewStroke();
 	// Add first point to the new stroke
@@ -184,14 +204,15 @@ void CScribblenewView::OnLButtonUp(UINT nFlags, CPoint point)
 	 // set up mapping mode and viewport origin
 	OnPrepareDC(&dc); 
 	dc.DPtoLP(&point);
+    dc.SelectClipRgn(&Canvas);
 
-
+   
 	CPen* pOldPen = dc.SelectObject(pDoc->GetCurrentPen());
 	dc.MoveTo(m_ptPrev);
 	dc.LineTo(point);
-
 	dc.SelectObject(pOldPen);
-	m_pStrokeCur->m_pointArray.Add(point);
+	 m_pStrokeCur->m_pointArray.Add(point);
+	
 	//finish painting event,start calculate rect
 	m_pStrokeCur->FinishStroke();
 	//update others views to change 
@@ -214,19 +235,16 @@ void CScribblenewView::OnMouseMove(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
 	dc.DPtoLP(&point);
+	dc.SelectClipRgn(&Canvas);
 
-	m_pStrokeCur->m_pointArray.Add(point);
-
-	// Draw a line from the previous detected point in the mouse
-	// drag to the current point.
 	CPen* pOldPen = dc.SelectObject(GetDocument()->GetCurrentPen());
-
 	dc.MoveTo(m_ptPrev);
 	dc.LineTo(point);
-
 	dc.SelectObject(pOldPen);
+	m_pStrokeCur->m_pointArray.Add(point);
 	m_ptPrev = point;
 	
+	//Invalidate();
 	CView::OnMouseMove(nFlags, point);
 	return;
 }
@@ -259,8 +277,9 @@ void CScribblenewView::OnUpdate(CView* /* pSender */, LPARAM /* lHint */,
 void CScribblenewView::OnInitialUpdate() 
 {
 	//MM_LOENGLISH  Each logical unit is converted to 0.01 inch.Positive x is to the right; positive y is up.
-	SetScrollSizes(MM_LOENGLISH, GetDocument()->GetDocSize());
-	
+	SetScrollSizes(MM_TEXT, GetDocument()->GetDocSize());
+	Canvas.CreateRectRgn(0, 0,GetDocument()->GetDocSize().cx,GetDocument()->GetDocSize().cy);
+
 	CScrollView::OnInitialUpdate();
 }
 
@@ -281,4 +300,23 @@ void CScribblenewView::OnInitialUpdate()
 //	
 //	CScrollView::OnVScroll(nSBCode, nPos, pScrollBar);
 //}
+
+
+
+//BOOL CScribblenewView::OnEraseBkgnd(CDC* pDC)
+//{
+//	// TODO: Add your message handler code here and/or call default
+//
+//	return TRUE;
+//}
+
+
+BOOL CScribblenewView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	return TRUE; 
+
+}
+
 

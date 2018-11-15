@@ -15,12 +15,14 @@ protected: // 僅從序列化建立
 public:
 	CScribblenewDoc* GetDocument() const;
 	virtual void OnInitialUpdate();
+	CDC MemDC; 
+	CRgn Canvas ;
 protected:
 	CStroke*    m_pStrokeCur;   // stroke in progress
 	CPoint      m_ptPrev;       // last mouse point in stroke 
 private:
-	CDC *m_pdcDisplayMemory;
-	CBitmap *m_pBitmap;
+	CDC m_dcMemory;
+	CBitmap bmpCanvas;
 // 作業
 public:
 
@@ -51,10 +53,10 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void OnUpdate(CView* /* pSender */, LPARAM /* lHint */, CObject* pHint);
-	afx_msg void OnPaint();
-//	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-//	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	
 	void ResyncScrollSizes();
+//	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG  // ScribblenewView.cpp 中的偵錯版本

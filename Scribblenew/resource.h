@@ -2,6 +2,8 @@
 // Microsoft Visual C++ generated include file.
 // Used by Scribblenew.rc
 //
+#define CANCEL                          2
+#define ID_CANCEL                       2
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDR_MAINFRAME                   128

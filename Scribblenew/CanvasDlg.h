@@ -3,7 +3,7 @@
 
 // CanvasDlg dialog
 
-class CanvasDlg : public CDialogEx
+class CanvasDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CanvasDlg)
 
@@ -25,4 +25,6 @@ public:
 	COLORREF m_BackgroundColor;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnClickedBackgroundColor();
+	
+	
 };
