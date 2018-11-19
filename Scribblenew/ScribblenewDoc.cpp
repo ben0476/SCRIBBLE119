@@ -8,7 +8,7 @@
 #ifndef SHARED_HANDLERS
 #include "Scribblenew.h"
 #endif
-
+#include <afxwinappex.h>
 #include "ScribblenewDoc.h"
 #include "PenWidthsDlg.h"
 #include <propkey.h>
@@ -51,12 +51,20 @@ BOOL CScribblenewDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
+
+	CString SettingName("Setting");
+	CSize sizeDoc = CSize(
+		AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Width"), 800),
+		AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Height"), 600)
+		);
+	COLORREF BackgroundColor = AfxGetApp()->GetProfileInt(SettingName, CString("Background Color"), RGB(255, 255, 255) );
+
     //call Canvas DLG
-	CanvasDlg dlg; 
+	CanvasDlg dlg(NULL,sizeDoc, BackgroundColor); 
 	if(dlg.DoModal() == IDOK )
 	{
 		m_sizeDoc = CSize(dlg.m_CanvasWidthV, dlg.m_CanvasHeightV);
-		m_MBackgroundColor = dlg.m_BackgroundColor;
+		m_BackgroundColor = dlg.m_BackgroundColor;
 		InitDocument();
 		return TRUE;
 	}
@@ -73,12 +81,23 @@ void CScribblenewDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: 在此加入儲存程式碼
+		ar << (WORD)m_nThinWidth;
+		ar << (WORD)m_nThickWidth;
 		ar << m_sizeDoc;
+		ar << (COLORREF)m_BackgroundColor;
 	}
 	else
 	{
 		// TODO: 在此加入載入程式碼
+		WORD w;
+		ar >> w;
+		m_nThinWidth = w;
+		ar >> w;
+		m_nThickWidth = w;
 		ar >> m_sizeDoc;
+		COLORREF c;
+		ar >> c;
+		m_BackgroundColor = c;
 	}
 
 	m_strokeList.Serialize(ar); //
@@ -173,12 +192,23 @@ void CScribblenewDoc::DeleteContents()
 
 void CScribblenewDoc::InitDocument()  //pen data setting
 {   
-	m_bThickPen = FALSE;
-	m_nPenWidth = 2; //  2 pixel pen width
-	m_nThinWidth = 2;   //  thin pen is 2 pixels wide
-	m_nThickWidth = 4;  //  thick pen is 4 pixels wide
-	m_PenColor = RGB(0, 0, 0); // default pen color is black
-	ReplacePen();	
+	
+	//m_nPenWidth = 2; //  2 pixel pen width
+	//m_nThinWidth = 2;   //  thin pen is 2 pixels wide
+	//m_nThickWidth = 4;  //  thick pen is 4 pixels wide
+	//m_PenColor = RGB(0, 0, 0); // default pen color is black
+	//ReplacePen();	
+
+    m_bThickPen = FALSE;
+	CString SettingName("Setting");
+	m_nThinWidth  = AfxGetApp()->GetProfileInt(SettingName, CString("Thin Width"), 2);
+	m_nThickWidth = AfxGetApp()->GetProfileInt(SettingName, CString("Thick Width"), 4);
+	
+	ReplacePen();
+
+	AfxGetApp()->WriteProfileInt(SettingName, CString("Canvas Width"), m_sizeDoc.cx);
+	AfxGetApp()->WriteProfileInt(SettingName, CString("Canvas Height"), m_sizeDoc.cy);
+	AfxGetApp()->WriteProfileInt(SettingName, CString("Background Color"), m_BackgroundColor);
 
 	//recall m_penCur will cause crash
   //  m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0,0,0));
@@ -189,7 +219,10 @@ CStroke* CScribblenewDoc::NewStroke()
 	//creat new CStroke and add into list tail
 	//add pen color item, so we can save color
 	CStroke* pStrokeItem = new CStroke(m_nPenWidth,m_PenColor);
-	
+	if (pStrokeItem == nullptr)
+	{
+		return FALSE ;
+	}
 	m_strokeList.AddTail(pStrokeItem);
 	SetModifiedFlag();
 
@@ -287,7 +320,7 @@ void CScribblenewDoc::ReplacePen(){
 void CScribblenewDoc::OnUpdatePenThickline(CCmdUI *pCmdUI)
 {
 	// TODO: Add your command update UI handler code here
-	pCmdUI->SetCheck(m_bThickPen);
+ 	pCmdUI->SetCheck(m_bThickPen);
 }
 
 
@@ -313,6 +346,11 @@ void CScribblenewDoc::OnPenWidths()
 		// get dlg setting value
 		m_nThinWidth = dlg.m_nThinWidth;
 		m_nThickWidth = dlg.m_nThickWidth;
+
+		CString SettingName("Setting");
+		AfxGetApp()->WriteProfileInt(SettingName, CString("Thin Width"), m_nThinWidth);
+		AfxGetApp()->WriteProfileInt(SettingName, CString("Thick Width"), m_nThickWidth);
+
 
 		//Update pen
 		ReplacePen();
@@ -356,6 +394,7 @@ void CScribblenewDoc::OnPenColor() //pick color
 	if(dlg.DoModal() == IDOK) //allowed user pick on color
 	{
 		m_PenColor = dlg.GetColor();
+
 		ReplacePen(); 
 	}
 }

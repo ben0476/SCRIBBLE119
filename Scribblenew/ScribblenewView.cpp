@@ -74,21 +74,16 @@ void CScribblenewView::OnDraw(CDC* pDC)
 	CSize CanvasSize = pDoc->GetDocSize();  //get canvas size we set
 	CRect CanvasRect = rectClip;
 	CanvasRect.SetRect(0, 0, CanvasSize.cx, 0- CanvasSize.cy); //set canvas rect
-//
-//	//CDC::FillSolidRect, Call this member function to fill the given rectangle with the specified solid color.
-//	//pDC->FillSolidRect(rectClip ,pDoc->GetBackgroundColor());
-//
-	// avoid rounding to nothing
-	
+
+	//double buffer
 	MemDC.CreateCompatibleDC(pDC);
 	bmpCanvas.CreateCompatibleBitmap(pDC, rectClip.right, rectClip.bottom);
 	CBitmap *pOldBi = MemDC.SelectObject(&bmpCanvas);
-
-	//pDC->SelectClipRgn(NULL);
-	//pDC->IntersectClipRect(0, 0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
-
+	//filled default color to all panel
 	MemDC.FillSolidRect(0, 0, rectClip.right, rectClip.bottom, RGB(255, 255, 255));
+	//painting area limit
 	MemDC.SelectClipRgn(&Canvas);
+	//filled color we pick for canvas
 	MemDC.FillSolidRect(0, 0, CanvasRect.right, 0 - CanvasRect.bottom, pDoc->GetBackgroundColor());
 
 	
@@ -109,9 +104,7 @@ void CScribblenewView::OnDraw(CDC* pDC)
 
 /*			if (!RrectStroke.IntersectRect(&rectStroke, &rectClip))
 			continue;*/
-		//pDC->SelectClipRgn(NULL);
-		//pDC->IntersectClipRect(0, 0, GetDocument()->GetDocSize().cx, -GetDocument()->GetDocSize().cy);
-		pStroke->DrawStroke(&MemDC);
+			pStroke->DrawStroke(&MemDC);
 		
 	}
 
@@ -276,7 +269,7 @@ void CScribblenewView::OnUpdate(CView* /* pSender */, LPARAM /* lHint */,
 
 void CScribblenewView::OnInitialUpdate() 
 {
-	//MM_LOENGLISH  Each logical unit is converted to 0.01 inch.Positive x is to the right; positive y is up.
+	
 	SetScrollSizes(MM_TEXT, GetDocument()->GetDocSize());
 	Canvas.CreateRectRgn(0, 0,GetDocument()->GetDocSize().cx,GetDocument()->GetDocSize().cy);
 

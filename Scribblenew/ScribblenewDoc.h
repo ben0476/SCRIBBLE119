@@ -49,7 +49,7 @@ protected: // 僅從序列化建立
 public:
 	CTypedPtrList<CObList,CStroke*> m_strokeList; //List 
 	CPen* GetCurrentPen() { return &m_penCur; }
-	COLORREF GetBackgroundColor() { return m_MBackgroundColor; }
+	COLORREF GetBackgroundColor() { return m_BackgroundColor; }
 	CSize GetDocSize(){ return m_sizeDoc; }
 protected:
 	UINT m_nPenWidth; // current pen width
@@ -59,7 +59,7 @@ protected:
 	UINT            m_nThickWidth;
 	COLORREF        m_PenColor;
 	CSize           m_sizeDoc;
-	COLORREF        m_MBackgroundColor;
+	COLORREF        m_BackgroundColor;
 
 // 作業
 public:

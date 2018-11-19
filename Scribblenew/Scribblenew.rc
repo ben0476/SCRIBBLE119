@@ -343,7 +343,7 @@ END
 STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "Scribblenew"
-    IDR_ScribblenewTYPE     "\nScribblenew\nScribblenew\n\n\nScribblenew.Document\nScribblenew.Document"
+    IDR_ScribblenewTYPE     "\nScribblenew\nScribblenew\nScribblenew Files (*.scb)\n.scb\nScribblenew.Document\nScribblenew.Document"
 END
 
 STRINGTABLE

@@ -11,13 +11,12 @@
 
 IMPLEMENT_DYNAMIC(CanvasDlg, CDialog)
 
-CanvasDlg::CanvasDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CanvasDlg::IDD, pParent)
+CanvasDlg::CanvasDlg(CWnd* pParent  /*=NULL*/,const CSize &canvasSize, const COLORREF bgColor) // standard constructor
+: CDialog(CanvasDlg::IDD, pParent)
 {
-
-	m_CanvasWidthV = 800;
-	m_CanvasHeightV = 600;
-	m_BackgroundColor = RGB(255, 255, 255);
+	m_CanvasWidthV = canvasSize.cx;
+	m_CanvasHeightV = canvasSize.cy;
+	m_BackgroundColor = bgColor;
 }
 
 CanvasDlg::~CanvasDlg()

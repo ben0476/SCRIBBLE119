@@ -8,7 +8,7 @@ class CanvasDlg : public CDialog
 	DECLARE_DYNAMIC(CanvasDlg)
 
 public:
-	CanvasDlg(CWnd* pParent = NULL);   // standard constructor
+	CanvasDlg(CWnd* pParent = NULL,const CSize &canvasSize = CSize(800, 600), const COLORREF bgColor = RGB(255, 255, 255));   // standard constructor
 	virtual ~CanvasDlg();
 
 // Dialog Data

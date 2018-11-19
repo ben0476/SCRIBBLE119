@@ -19,7 +19,7 @@
 #include <afxwin.h>         // MFC 核心與標準元件
 #include <afxext.h>         // MFC 擴充功能
 #include <afxtempl.h>       //Using template-based classes
-
+#include <afxwinappex.h>
 #include <afxdisp.h>        // MFC Automation 類別
 
 
