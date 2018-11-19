@@ -14,6 +14,7 @@
 #include <propkey.h>
 #include "ScribblenewView.h"
 #include "CanvasDlg.h"
+#include <afxwin.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -51,16 +52,13 @@ BOOL CScribblenewDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-
+	// when open new file get default setting
 	CString SettingName("Setting");
-	CSize sizeDoc = CSize(
-		AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Width"), 800),
-		AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Height"), 600)
-		);
+	CSize RegistrySize = CSize(AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Width"), 800), AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Height"), 600));
 	COLORREF BackgroundColor = AfxGetApp()->GetProfileInt(SettingName, CString("Background Color"), RGB(255, 255, 255) );
 
     //call Canvas DLG
-	CanvasDlg dlg(NULL,sizeDoc, BackgroundColor); 
+	CanvasDlg dlg(NULL, RegistrySize, BackgroundColor); 
 	if(dlg.DoModal() == IDOK )
 	{
 		m_sizeDoc = CSize(dlg.m_CanvasWidthV, dlg.m_CanvasHeightV);
@@ -198,14 +196,15 @@ void CScribblenewDoc::InitDocument()  //pen data setting
 	//m_nThickWidth = 4;  //  thick pen is 4 pixels wide
 	//m_PenColor = RGB(0, 0, 0); // default pen color is black
 	//ReplacePen();	
-
+	
     m_bThickPen = FALSE;
+
 	CString SettingName("Setting");
 	m_nThinWidth  = AfxGetApp()->GetProfileInt(SettingName, CString("Thin Width"), 2);
 	m_nThickWidth = AfxGetApp()->GetProfileInt(SettingName, CString("Thick Width"), 4);
-	
-	ReplacePen();
 
+	ReplacePen();
+	//write setting information in registry
 	AfxGetApp()->WriteProfileInt(SettingName, CString("Canvas Width"), m_sizeDoc.cx);
 	AfxGetApp()->WriteProfileInt(SettingName, CString("Canvas Height"), m_sizeDoc.cy);
 	AfxGetApp()->WriteProfileInt(SettingName, CString("Background Color"), m_BackgroundColor);
@@ -346,7 +345,7 @@ void CScribblenewDoc::OnPenWidths()
 		// get dlg setting value
 		m_nThinWidth = dlg.m_nThinWidth;
 		m_nThickWidth = dlg.m_nThickWidth;
-
+		//update pen width in registry
 		CString SettingName("Setting");
 		AfxGetApp()->WriteProfileInt(SettingName, CString("Thin Width"), m_nThinWidth);
 		AfxGetApp()->WriteProfileInt(SettingName, CString("Thick Width"), m_nThickWidth);
