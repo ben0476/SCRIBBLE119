@@ -23,6 +23,17 @@ protected:
 private:
 	CDC m_dcMemory;
 	CBitmap bmpCanvas;
+
+	CImage OrgImg;
+	CImage DispImg;
+	CImage AnsImg;
+	CImage Y;
+	CImage U;
+	CImage V;
+	bool m_bShowImage;
+	bool SetState;
+	CString CTitle;
+
 // §@·~
 public:
 
@@ -53,7 +64,6 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	void OnUpdate(CView* /* pSender */, LPARAM /* lHint */, CObject* pHint);
-	
 	void ResyncScrollSizes();
 //	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);

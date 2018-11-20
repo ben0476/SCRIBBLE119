@@ -11,12 +11,12 @@
 
 IMPLEMENT_DYNAMIC(CanvasDlg, CDialog)
 
-CanvasDlg::CanvasDlg(CWnd* pParent  /*=NULL*/,const CSize &canvasSize, const COLORREF bgColor) // standard constructor
+CanvasDlg::CanvasDlg(CWnd* pParent  /*=NULL*/,const CSize &CanvasSize, const COLORREF BackGColor) // standard constructor
 : CDialog(CanvasDlg::IDD, pParent)
 {
-	m_CanvasWidthV = canvasSize.cx;
-	m_CanvasHeightV = canvasSize.cy;
-	m_BackgroundColor = bgColor;
+	m_CanvasWidthV = CanvasSize.cx;
+	m_CanvasHeightV = CanvasSize.cy;
+	m_BackgroundColor = BackGColor;
 }
 
 CanvasDlg::~CanvasDlg()
@@ -36,7 +36,12 @@ BEGIN_MESSAGE_MAP(CanvasDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_Background_Color, &CanvasDlg::OnClickedBackgroundColor)
 	
-	END_MESSAGE_MAP()
+	
+	ON_BN_CLICKED(IDC_CLEAR, &CanvasDlg::OnBnClickedClear)
+	ON_BN_CLICKED(IDC_BROWSE, &CanvasDlg::OnBnClickedBrowse)
+//	ON_EN_KILLFOCUS(IDC_SHOW_PATH, &CanvasDlg::OnEnKillfocusShowPath)
+ON_EN_CHANGE(IDC_SHOW_PATH, &CanvasDlg::OnEnChangeShowPath)
+END_MESSAGE_MAP()
 
 
 // CanvasDlg message handlers
@@ -77,5 +82,63 @@ void CanvasDlg::OnClickedBackgroundColor()
 	}
 }
 
+void CanvasDlg::OnBnClickedClear()
+{
+	// TODO: Add your control notification handler code here
+	//clear the path text
+	SetDlgItemText(IDC_SHOW_PATH, _T(""));
+
+	/*GetDlgItem(IDC_Canvas_Width)->EnableWindow(TRUE);
+	GetDlgItem(IDC_Canvas_Height)->EnableWindow(TRUE);
+	GetDlgItem(IDC_Background_Color)->EnableWindow(TRUE);*/
+}
 
 
+void CanvasDlg::OnBnClickedBrowse()
+{
+	// TODO: Add your control notification handler code here
+	CFileDialog fd(
+					TRUE, 
+					NULL, 
+					NULL, 
+					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT |OFN_ENABLESIZING,
+					_T("BMP Files (*.bmp)|*.bmp;)"),
+					NULL);
+
+	if(fd.DoModal() == IDOK)  
+	{
+		//get file path
+		CString FileName =  fd.GetPathName();
+		//show file path 
+		SetDlgItemText(IDC_SHOW_PATH,FileName);
+	}
+	else  
+	{
+
+	}
+
+}
+
+void CanvasDlg::OnEnChangeShowPath()
+{
+	CString Gettext;
+	GetDlgItemText(IDC_SHOW_PATH, Gettext);
+	if (Gettext.IsEmpty())
+	{
+		GetDlgItem(IDC_Canvas_Width)->EnableWindow(TRUE);
+		GetDlgItem(IDC_Canvas_Height)->EnableWindow(TRUE);
+		GetDlgItem(IDC_Background_Color)->EnableWindow(TRUE);
+	} 
+	else
+	{
+		GetDlgItem(IDC_Canvas_Width)->EnableWindow(FALSE);
+		GetDlgItem(IDC_Canvas_Height)->EnableWindow(FALSE);
+		GetDlgItem(IDC_Background_Color)->EnableWindow(FALSE);
+	}
+}
+
+void CanvasDlg::GetImageSize()
+{
+	
+
+}

@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="CanvasDlg.h" />
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PenWidthsDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -115,6 +116,7 @@
   <ItemGroup>
     <ClCompile Include="CanvasDlg.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PenWidthsDlg.cpp" />
     <ClCompile Include="Scribblenew.cpp" />

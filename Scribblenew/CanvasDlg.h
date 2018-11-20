@@ -8,7 +8,7 @@ class CanvasDlg : public CDialog
 	DECLARE_DYNAMIC(CanvasDlg)
 
 public:
-	CanvasDlg(CWnd* pParent = NULL,const CSize &canvasSize = CSize(800, 600), const COLORREF bgColor = RGB(255, 255, 255));   // standard constructor
+	CanvasDlg(CWnd* pParent = NULL,const CSize &CanvasSize = CSize(800, 600), const COLORREF BackGColor = RGB(255, 255, 255));   // standard constructor
 	virtual ~CanvasDlg();
 
 // Dialog Data
@@ -16,7 +16,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
+	void GetImageSize();
 	DECLARE_MESSAGE_MAP()
 public:
 //	afx_msg void OnFileNew();
@@ -25,6 +25,8 @@ public:
 	COLORREF m_BackgroundColor;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnClickedBackgroundColor();
-	
-	
+	afx_msg void OnBnClickedClear();
+	afx_msg void OnBnClickedBrowse();
+//	afx_msg void OnEnKillfocusShowPath();
+	afx_msg void OnEnChangeShowPath();
 };

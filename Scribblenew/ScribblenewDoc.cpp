@@ -26,12 +26,13 @@ IMPLEMENT_DYNCREATE(CScribblenewDoc, CDocument)
 BEGIN_MESSAGE_MAP(CScribblenewDoc, CDocument)
 	ON_COMMAND(ID_PEN_CLEARALL, &CScribblenewDoc::OnPenClearall)
 	ON_COMMAND(ID_PEN_THICKLINE, &CScribblenewDoc::OnPenThickline)
-	ON_UPDATE_COMMAND_UI(ID_PEN_THICKLINE, &CScribblenewDoc::OnUpdatePenThickline)
+//	ON_UPDATE_COMMAND_UI(ID_PEN_THICKLINE, &CScribblenewDoc::OnUpdatePenThickline)
 	ON_UPDATE_COMMAND_UI(ID_PEN_CLEARALL, &CScribblenewDoc::OnUpdatePenClearall)
 	ON_COMMAND(ID_PEN_WIDTHS, &CScribblenewDoc::OnPenWidths)
 	ON_COMMAND(ID_PEN_Color, &CScribblenewDoc::OnPenColor)
 //	ON_COMMAND(IDD_CANVAS, &CScribblenewDoc::OnIddCanvas)
 //	ON_COMMAND(ID_FILE_NEW, &CScribblenewDoc::OnFileNew)
+ON_UPDATE_COMMAND_UI(ID_PEN_THICKLINE, &CScribblenewDoc::OnUpdatePenThickline)
 END_MESSAGE_MAP()
 
 
@@ -51,7 +52,7 @@ BOOL CScribblenewDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
-
+	
 	// when open new file get default setting
 	CString SettingName("Setting");
 	CSize RegistrySize = CSize(AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Width"), 800), AfxGetApp()->GetProfileInt(SettingName, CString("Canvas Height"), 600));
@@ -65,6 +66,10 @@ BOOL CScribblenewDoc::OnNewDocument()
 		m_BackgroundColor = dlg.m_BackgroundColor;
 		InitDocument();
 		return TRUE;
+	}
+	else
+	{
+      m_bThickPen = FALSE;
 	}
 	return TRUE;
 }
@@ -316,11 +321,11 @@ void CScribblenewDoc::ReplacePen(){
 	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, m_PenColor); //after change pen setting, creat a new pen to show
 }
 
-void CScribblenewDoc::OnUpdatePenThickline(CCmdUI *pCmdUI)
-{
-	// TODO: Add your command update UI handler code here
- 	pCmdUI->SetCheck(m_bThickPen);
-}
+//void CScribblenewDoc::OnUpdatePenThickline(CCmdUI *pCmdUI)
+//{
+//	// TODO: Add your command update UI handler code here
+// 	pCmdUI->SetCheck(m_bThickPen);
+//}
 
 
 void CScribblenewDoc::OnUpdatePenClearall(CCmdUI *pCmdUI)
@@ -398,21 +403,10 @@ void CScribblenewDoc::OnPenColor() //pick color
 	}
 }
 
-//void CScribblenewDoc::OnFileNew()
-//{
-//	// TODO: Add your command handler code here
-//	CanvasDlg dlg;
-//
-//	if (dlg.DoModal() == IDOK)
-//	{
-//		
-//	}
-//}
 
 
-
-
-
-
-
-
+void CScribblenewDoc::OnUpdatePenThickline(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+    pCmdUI->SetCheck(m_bThickPen);
+}

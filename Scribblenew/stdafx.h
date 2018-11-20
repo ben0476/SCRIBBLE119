@@ -21,8 +21,10 @@
 #include <afxtempl.h>       //Using template-based classes
 #include <afxwinappex.h>
 #include <afxdisp.h>        // MFC Automation 類別
-
-
+#include <atlimage.h>
+#include "Image.h"
+#include <math.h>
+#include <algorithm>
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // MFC 支援的 Internet Explorer 4 通用控制項

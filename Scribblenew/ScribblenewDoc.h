@@ -98,12 +98,13 @@ protected:
 public:
 	afx_msg void OnPenClearall();
 	afx_msg void OnPenThickline();
-	afx_msg void OnUpdatePenThickline(CCmdUI *pCmdUI);
+//	afx_msg void OnUpdatePenThickline(CCmdUI *pCmdUI);
 	afx_msg void OnUpdatePenClearall(CCmdUI *pCmdUI);
 	afx_msg void OnPenWidths();
 	;
 	afx_msg void OnPenColor();
 	//afx_msg void OnIddCanvas();
 //	afx_msg void OnFileNew();
+	afx_msg void OnUpdatePenThickline(CCmdUI *pCmdUI);
 };
 
