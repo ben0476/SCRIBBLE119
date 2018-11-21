@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CanvasDlg, CDialog)
 
 CanvasDlg::CanvasDlg(CWnd* pParent  /*=NULL*/,const CSize &CanvasSize, const COLORREF BackGColor) // standard constructor
 : CDialog(CanvasDlg::IDD, pParent)
+, m_FilePath(_T(""))
 {
 	m_CanvasWidthV = CanvasSize.cx;
 	m_CanvasHeightV = CanvasSize.cy;
@@ -28,6 +29,7 @@ void CanvasDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_Canvas_Width, m_CanvasWidthV);
 	DDX_Text(pDX, IDC_Canvas_Height, m_CanvasHeightV);
+	DDX_Text(pDX, IDC_SHOW_PATH, m_FilePath);
 }
 
 
@@ -108,9 +110,10 @@ void CanvasDlg::OnBnClickedBrowse()
 	if(fd.DoModal() == IDOK)  
 	{
 		//get file path
-		CString FileName =  fd.GetPathName();
+		 m_FilePath =  fd.GetPathName();
 		//show file path 
-		SetDlgItemText(IDC_SHOW_PATH,FileName);
+		SetDlgItemText(IDC_SHOW_PATH, m_FilePath);
+		GetImageSize();
 	}
 	else  
 	{
@@ -139,6 +142,18 @@ void CanvasDlg::OnEnChangeShowPath()
 
 void CanvasDlg::GetImageSize()
 {
-	
+	if(m_FilePath.IsEmpty() )
+	{
+		return ;
+	}
+
+	CImage image;
+	LPCSTR FilePath = (LPCSTR)(LPCTSTR)m_FilePath;
+	image.Load ((LPCTSTR) FilePath);
+
+	//CClientDC dc(this);	
+	//CSize IMGSize(image.GetWidth(), image.GetHeight());
+	SetDlgItemInt(IDC_Canvas_Width, image.GetWidth() );
+	SetDlgItemInt(IDC_Canvas_Height,image.GetHeight() );
 
 }

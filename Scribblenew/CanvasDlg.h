@@ -23,10 +23,12 @@ public:
 	int m_CanvasWidthV;
 	int m_CanvasHeightV;
 	COLORREF m_BackgroundColor;
+	
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnClickedBackgroundColor();
 	afx_msg void OnBnClickedClear();
 	afx_msg void OnBnClickedBrowse();
 //	afx_msg void OnEnKillfocusShowPath();
 	afx_msg void OnEnChangeShowPath();
+	CString m_FilePath;
 };

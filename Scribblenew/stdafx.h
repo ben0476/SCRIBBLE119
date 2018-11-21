@@ -26,6 +26,7 @@
 #include <math.h>
 #include <algorithm>
 
+
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // MFC 支援的 Internet Explorer 4 通用控制項
 #endif

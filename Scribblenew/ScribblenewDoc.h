@@ -51,6 +51,8 @@ public:
 	CPen* GetCurrentPen() { return &m_penCur; }
 	COLORREF GetBackgroundColor() { return m_BackgroundColor; }
 	CSize GetDocSize(){ return m_sizeDoc; }
+	CString GetFilePath() { return m_FilePath; }
+	BOOL IfUseImage() { return m_IfUseImage; }
 protected:
 	UINT m_nPenWidth; // current pen width
 	CPen m_penCur; // current pen style
@@ -60,6 +62,8 @@ protected:
 	COLORREF        m_PenColor;
 	CSize           m_sizeDoc;
 	COLORREF        m_BackgroundColor;
+	CString         m_FilePath;
+	BOOL            m_IfUseImage;        
 
 // §@·~
 public:

@@ -74,21 +74,41 @@ void CScribblenewView::OnDraw(CDC* pDC)
 	CSize CanvasSize = pDoc->GetDocSize();  //get canvas size we set
 	CRect CanvasRect = rectClip;
 	CanvasRect.SetRect(0, 0, CanvasSize.cx, 0- CanvasSize.cy); //set canvas rect
-
 	//double buffer
 	MemDC.CreateCompatibleDC(pDC);
 	bmpCanvas.CreateCompatibleBitmap(pDC, rectClip.right, rectClip.bottom);
 	CBitmap *pOldBi = MemDC.SelectObject(&bmpCanvas);
-	//filled default color to all panel
-	MemDC.FillSolidRect(0, 0, rectClip.right, rectClip.bottom, RGB(255, 255, 255));
-	//painting area limit
-	MemDC.SelectClipRgn(&Canvas);
-	//filled color we pick for canvas
-	MemDC.FillSolidRect(0, 0, CanvasRect.right, 0 - CanvasRect.bottom, pDoc->GetBackgroundColor());
+    CImage image;
+	CString getpath = GetDocument()->GetFilePath();
+	if(GetDocument()->IfUseImage())
+	{
+		LPCSTR FilePath = (LPCSTR)(LPCTSTR)getpath;
+		image.Load ((LPCTSTR)FilePath);
+		
+		CBitmap *pOldBi = MemDC.SelectObject(&bmpCanvas);
+		//filled default color to all panel
+		MemDC.FillSolidRect(0, 0, rectClip.right, rectClip.bottom, RGB(255, 255, 255));
+		image.Draw(MemDC, 0, 0); 
+	}
+	else
+	{
+		
+		CBitmap *pOldBi = MemDC.SelectObject(&bmpCanvas);
+		//filled default color to all panel
+		MemDC.FillSolidRect(0, 0, rectClip.right, rectClip.bottom, RGB(255, 255, 255));
+		//filled color we pick for canvas
+		MemDC.FillSolidRect(0, 0, CanvasRect.right, 0 - CanvasRect.bottom, pDoc->GetBackgroundColor());
+	}
 
+
+	//CBitmap *pOldBi = MemDC.SelectObject(pBitmap);
+	////painting area limit
+    MemDC.SelectClipRgn(&Canvas);
+//filled color we pick for canvas
+ //   MemDC.FillSolidRect(0, 0, CanvasRect.right, 0 - CanvasRect.bottom, pDoc->GetBackgroundColor());
 	
-	//pDC->LPtoDP(&rectClip);
-	//rectClip.InflateRect(1, -1); 
+	/*pDC->LPtoDP(&rectClip);
+	rectClip.InflateRect(1, -1); */
 
 	CTypedPtrList<CObList,CStroke*>& strokeList = pDoc->m_strokeList;
 	POSITION pos = strokeList.GetHeadPosition();
@@ -107,8 +127,6 @@ void CScribblenewView::OnDraw(CDC* pDC)
 			pStroke->DrawStroke(&MemDC);
 		
 	}
-
-	
 
 	pDC->BitBlt(0,0,rectClip.right,rectClip.bottom,&MemDC,0,0,SRCCOPY);
 	pDC->SelectObject(pOldBi); 
@@ -272,6 +290,7 @@ void CScribblenewView::OnInitialUpdate()
 	
 	SetScrollSizes(MM_TEXT, GetDocument()->GetDocSize());
 	Canvas.CreateRectRgn(0, 0,GetDocument()->GetDocSize().cx,GetDocument()->GetDocSize().cy);
+
 
 	CScrollView::OnInitialUpdate();
 }

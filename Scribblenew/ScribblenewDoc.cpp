@@ -62,6 +62,17 @@ BOOL CScribblenewDoc::OnNewDocument()
 	CanvasDlg dlg(NULL, RegistrySize, BackgroundColor); 
 	if(dlg.DoModal() == IDOK )
 	{
+		 m_FilePath = dlg.m_FilePath;
+		
+		 if (m_FilePath.IsEmpty())
+		 {
+			 m_IfUseImage = FALSE;
+		 }
+		 else
+		 {
+			 m_IfUseImage = TRUE;
+		 }
+
 		m_sizeDoc = CSize(dlg.m_CanvasWidthV, dlg.m_CanvasHeightV);
 		m_BackgroundColor = dlg.m_BackgroundColor;
 		InitDocument();
@@ -75,8 +86,6 @@ BOOL CScribblenewDoc::OnNewDocument()
 }
 
 
-
-
 // CScribblenewDoc §Ç¦C¤Æ
 
 void CScribblenewDoc::Serialize(CArchive& ar)
@@ -88,6 +97,7 @@ void CScribblenewDoc::Serialize(CArchive& ar)
 		ar << (WORD)m_nThickWidth;
 		ar << m_sizeDoc;
 		ar << (COLORREF)m_BackgroundColor;
+		ar  << m_FilePath;
 	}
 	else
 	{
@@ -101,6 +111,7 @@ void CScribblenewDoc::Serialize(CArchive& ar)
 		COLORREF c;
 		ar >> c;
 		m_BackgroundColor = c;
+		ar >> m_FilePath;
 	}
 
 	m_strokeList.Serialize(ar); //

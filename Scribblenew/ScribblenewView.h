@@ -23,7 +23,7 @@ protected:
 private:
 	CDC m_dcMemory;
 	CBitmap bmpCanvas;
-
+	CBitmap pic;
 	CImage OrgImg;
 	CImage DispImg;
 	CImage AnsImg;
